@@ -1,0 +1,11 @@
+{
+  "name": "MedNova",
+  "description": "AI-powered multilingual clinical intake, intelligent triage, and dynamic patient queue management platform for hospitals in India.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
+

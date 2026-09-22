@@ -1,0 +1,778 @@
+import { QueueTicket } from '../types/mednova';
+
+export const INITIAL_SAMPLE_TICKETS: QueueTicket[] = [
+  {
+    id: 'pt-001',
+    tokenNumber: 'CR-101',
+    patient: {
+      id: 'P-98412',
+      abhaId: '91-4829-1029-4821',
+      fullName: 'Rajesh Sharma',
+      age: 58,
+      gender: 'male',
+      phone: '+91 98450 12345',
+      emergencyContact: '+91 98450 67890 (Son: Amit)',
+      city: 'Jaipur, Rajasthan',
+      preferredLanguage: 'hi',
+    },
+    intake: {
+      chiefComplaint: 'Severe crushing chest pain and profuse sweating for the past 90 minutes radiating to left shoulder and jaw.',
+      chiefComplaintOriginal: 'मेरे सीने में पिछले डेढ़ घंटे से बहुत भारी दबाव और पसीना आ रहा है, दर्द बाएं कंधे और जबड़े तक जा रहा है।',
+      inputLanguage: 'hi',
+      inputMode: 'voice',
+      duration: '90 minutes',
+      onset: 'sudden',
+      bodyRegions: ['chest'],
+      painType: 'Crushing heaviness / severe tightness',
+      associatedSymptoms: ['Sweating / Cold Clammy Skin', 'Shortness of Breath / Dyspnea', 'Nausea / Vomiting'],
+      dynamicQuestions: [
+        {
+          id: 'q1',
+          questionText: 'Does the pain worsen with deep breathing or when pressing on the chest?',
+          questionTextTranslated: 'क्या गहरी सांस लेने पर या छाती दबाने पर दर्द बढ़ता है?',
+          category: 'radiation',
+          answer: 'No, it is a constant deep central heaviness not affected by pressing.',
+        },
+        {
+          id: 'q2',
+          questionText: 'Do you have a personal history of diabetes, hypertension or smoking?',
+          questionTextTranslated: 'क्या आपको मधुमेह, उच्च रक्तचाप या धूम्रपान का इतिहास है?',
+          category: 'associated',
+          answer: 'Yes, Type 2 diabetes for 8 years and heavy smoker.',
+        }
+      ],
+      pastMedicalHistory: ['Type 2 Diabetes Mellitus', 'Smoker (20 pack-years)'],
+      currentMedications: ['Metformin 500mg BD', 'Telmisartan 40mg OD'],
+      allergies: ['No Known Drug Allergies (NKDA)'],
+      documents: [
+        {
+          id: 'doc-1',
+          fileName: 'Old_Discharge_Summary_SMS_Hospital.pdf',
+          fileType: 'discharge_summary',
+          date: '2024-03-15',
+          extractedSummary: 'Discharged 2024 for unstable angina evaluation; TMT was inconclusive, advised coronary angiography.',
+          extractedKeyFindings: ['Borderline LVH', 'TMT Inconclusive', 'HbA1c 7.9%'],
+        }
+      ],
+      vitals: {
+        bloodPressureSystolic: 172,
+        bloodPressureDiastolic: 102,
+        heartRate: 112,
+        spO2: 95,
+        temperature: 98.4,
+        respiratoryRate: 24,
+        painScore: 9,
+      },
+      redFlagsDetected: [
+        'Central crushing chest pain radiating to left arm/jaw',
+        'Marked tachycardia: Heart Rate 112 bpm',
+        'Diaphoresis and dyspnea'
+      ],
+    },
+    triage: {
+      level: 1,
+      score: 98,
+      recommendedDepartment: 'Cardiology',
+      priorityRationale: 'CRITICAL ALERT: Classic presentation of Acute Coronary Syndrome (STEMI / NSTEMI) with radiation and autonomic diaphoresis in a high-risk diabetic patient.',
+      redFlags: [
+        'High suspicion of Acute Coronary Syndrome (ACS / STEMI)',
+        'Hypertensive emergency elevation (172/102 mmHg)',
+        'Diaphoresis with unremitting pain score 9/10'
+      ],
+      differentialConsiderations: [
+        'Acute ST-Elevation Myocardial Infarction (Anterior/Inferior Wall)',
+        'Acute Aortic Dissection Type A',
+        'Acute Coronary Thrombosis'
+      ],
+      suggestedInvestigations: [
+        'Stat 12-Lead ECG within 10 minutes of arrival',
+        'High-Sensitivity Cardiac Troponin-I (0hr & 2hr)',
+        'Point-of-care Blood Gas, Electrolytes, Serum Creatinine',
+        'Bedside Transthoracic Echocardiogram (Wall motion analysis)'
+      ],
+      immediateNursingActions: [
+        'Immediate transfer to Resuscitation Bay 1',
+        'Establish dual 18G peripheral IV lines',
+        'Stat 12-lead ECG and notify Cardiology Fellow on-call',
+        'Keep Aspirin 300mg + Clopidogrel 300mg loading dose protocol ready pending physician confirmation',
+        'Continuous cardiac telemetry monitor'
+      ],
+      aiConfidence: 0.98,
+      isEmergency: true,
+    },
+    department: 'Cardiology',
+    roomNumber: 'Emergency Resus Bay 1',
+    status: 'called',
+    createdAt: new Date(Date.now() - 8 * 60000).toISOString(),
+    calledAt: new Date(Date.now() - 2 * 60000).toISOString(),
+    priorityRank: 5080,
+    estimatedWaitMinutes: 0,
+    assignedDoctor: 'Dr. Arvind Mehra, MD, DM (Cardio)',
+  },
+  {
+    id: 'pt-002',
+    tokenNumber: 'GM-204',
+    patient: {
+      id: 'P-98413',
+      abhaId: '33-9182-4421-9031',
+      fullName: 'Priya Sundaram',
+      age: 31,
+      gender: 'female',
+      phone: '+91 98840 54321',
+      city: 'Chennai, Tamil Nadu',
+      preferredLanguage: 'ta',
+    },
+    intake: {
+      chiefComplaint: 'High grade fever with severe retro-orbital headache, body aches, and small red spots on arms for 3 days.',
+      chiefComplaintOriginal: '3 நாட்களாக கடுமையான காய்ச்சல் மற்றும் கண் இமைகளின் பின்னால் கடுமையான வலி உள்ளது, உடலில் சிவப்பு புள்ளிகள் தென்படுகின்றன.',
+      inputLanguage: 'ta',
+      inputMode: 'voice',
+      duration: '3 days',
+      onset: 'sudden',
+      bodyRegions: ['head_neck', 'skin_generalized'],
+      painType: 'Severe throbbing behind the eyes and deep bone pain',
+      associatedSymptoms: ['High Fever & Chills', 'Nausea / Vomiting', 'Skin Rash / Itching'],
+      dynamicQuestions: [
+        {
+          id: 'q1',
+          questionText: 'Have you noticed any bleeding from gums, nose, or dark stools?',
+          questionTextTranslated: 'ஈறுகளில் ரத்தக்கசிவு அல்லது கருப்பு நிற மலம் கழித்தீர்களா?',
+          category: 'red_flag',
+          answer: 'Mild gum bleeding while brushing morning today.',
+        }
+      ],
+      pastMedicalHistory: ['Hypothyroidism on Thyroxine'],
+      currentMedications: ['Thyronorm 50mcg OD'],
+      allergies: ['Penicillin (causes urticarial rash)'],
+      documents: [
+        {
+          id: 'doc-2',
+          fileName: 'CBC_Report_Local_Lab.pdf',
+          fileType: 'lab_report',
+          date: '2025-05-10',
+          extractedSummary: 'Platelet count marked drop to 42,000 /mcL; Hematocrit 44%; WBC 3,100 /mcL (leukopenia).',
+          extractedKeyFindings: ['Platelet: 42,000/uL', 'Hematocrit: 44%', 'Leukopenia: 3.1k'],
+        }
+      ],
+      vitals: {
+        bloodPressureSystolic: 98,
+        bloodPressureDiastolic: 66,
+        heartRate: 104,
+        spO2: 98,
+        temperature: 103.2,
+        respiratoryRate: 20,
+        painScore: 7,
+      },
+      redFlagsDetected: [
+        'Dengue with warning signs: Thrombocytopenia (42k) and spontaneous gum bleeding',
+        'Borderline hypotension (98/66 mmHg with narrow pulse pressure)',
+        'Hyperpyrexia 103.2°F'
+      ],
+    },
+    triage: {
+      level: 2,
+      score: 84,
+      recommendedDepartment: 'General Medicine',
+      priorityRationale: 'High clinical suspicion of Dengue Hemorrhagic Fever / Dengue with Warning Signs. Thrombocytopenia (<50k) and bleeding manifestation warrant close hemodynamic monitoring.',
+      redFlags: [
+        'Platelet count < 50,000/mcL with mucosal bleeding',
+        'Narrow pulse pressure (32 mmHg) indicating plasma leakage risk'
+      ],
+      differentialConsiderations: [
+        'Dengue Hemorrhagic Fever Grade I/II',
+        'Acute Leptospirosis',
+        'Enteric Fever (Typhoid with sepsis)',
+        'Acute Chikungunya'
+      ],
+      suggestedInvestigations: [
+        'Dengue NS1 Antigen & IgM/IgG ELISA stat',
+        'Repeat Complete Blood Count with Serial Hematocrit (every 6 hrs)',
+        'Liver Function Tests (ALT/AST for dengue hepatitis)',
+        'Serum Electrolytes & Renal Function Panel',
+        'Abdominal Ultrasound (for gallbladder wall edema & ascites)'
+      ],
+      immediateNursingActions: [
+        'Admit to Medical High Dependency Unit (HDU)',
+        'Initiate IV Normal Saline at 5-7 ml/kg/hr as per National Dengue Guidelines',
+        'Strict strict fluid balance chart and hourly urine output monitoring',
+        'Avoid NSAIDs and Aspirin (Paracetamol only for fever control)'
+      ],
+      aiConfidence: 0.95,
+      isEmergency: false,
+    },
+    department: 'General Medicine',
+    roomNumber: 'OPD Room 106',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 14 * 60000).toISOString(),
+    priorityRank: 1250,
+    estimatedWaitMinutes: 10,
+    assignedDoctor: 'Dr. S. K. Narayanan, MD (Internal Med)',
+  },
+  {
+    id: 'pt-003',
+    tokenNumber: 'PD-302',
+    patient: {
+      id: 'P-98414',
+      abhaId: '22-8192-3301-4412',
+      fullName: 'Mohammed Irfan',
+      age: 7,
+      gender: 'male',
+      phone: '+91 97110 99887',
+      emergencyContact: '+91 97110 99887 (Mother: Fatima)',
+      city: 'Hyderabad, Telangana',
+      preferredLanguage: 'te',
+    },
+    intake: {
+      chiefComplaint: 'Severe breathlessness, audible whistling sound when exhaling, and unable to complete full sentences for 3 hours.',
+      chiefComplaintOriginal: 'నాకు ఊపిరి తీసుకోవడం చాలా కష్టంగా ఉంది, పిల్లికూతలు వస్తున్నాయి, దగ్గు వల్ల రాత్రి పడుకోలేకపోయాను.',
+      inputLanguage: 'te',
+      inputMode: 'voice',
+      duration: '3 hours',
+      onset: 'sudden',
+      bodyRegions: ['chest'],
+      painType: 'Chest tightness and suffocation feeling',
+      associatedSymptoms: ['Shortness of Breath / Dyspnea', 'Audible Wheezing / Stridor', 'Persistent Cough'],
+      dynamicQuestions: [
+        {
+          id: 'q1',
+          questionText: 'Did he use his rescue inhaler at home, and did it relieve his breathing?',
+          category: 'onset',
+          answer: 'Given Salbutamol inhaler 2 puffs 30 mins ago, but no improvement.',
+        }
+      ],
+      pastMedicalHistory: ['Known Bronchial Asthma since age 3'],
+      currentMedications: ['Budecort Inhaler 100mcg', 'Asthalin SOS'],
+      allergies: ['Dust mites', 'Cold food'],
+      documents: [],
+      vitals: {
+        bloodPressureSystolic: 104,
+        bloodPressureDiastolic: 68,
+        heartRate: 132,
+        spO2: 91,
+        temperature: 99.1,
+        respiratoryRate: 36,
+        painScore: 5,
+      },
+      redFlagsDetected: [
+        'Hypoxia detected: SpO2 91% on room air',
+        'Pediatric tachypnea (RR 36/min) with intercostal retractions',
+        'Tachycardia (132 bpm)'
+      ],
+    },
+    triage: {
+      level: 2,
+      score: 88,
+      recommendedDepartment: 'Pediatrics',
+      priorityRationale: 'Acute Severe Asthma Exacerbation in a pediatric patient with SpO2 91%, respiratory distress, tachypnea, and poor response to home beta-agonist.',
+      redFlags: [
+        'Oxygen saturation 91% requiring supplemental O2',
+        'Marked tachypnea and intercostal retractions'
+      ],
+      differentialConsiderations: [
+        'Acute Severe Bronchial Asthma',
+        'Viral Bronchiolitis / Pneumonia',
+        'Foreign Body Aspiration'
+      ],
+      suggestedInvestigations: [
+        'Pulse oximetry continuous monitoring',
+        'Chest X-Ray AP view (rule out pneumothorax or consolidation)',
+        'Venous Blood Gas if distress continues post-nebulization'
+      ],
+      immediateNursingActions: [
+        'Immediate humidified Oxygen via nasal prongs to maintain SpO2 > 94%',
+        'Stat Nebulization: Levosalbutamol 1.25mg + Ipratropium Bromide 250mcg',
+        'Oral / IV Dexamethasone or Methylprednisolone as ordered by pediatrician',
+        'Comfort child in seated posture with parent present'
+      ],
+      aiConfidence: 0.96,
+      isEmergency: false,
+    },
+    department: 'Pediatrics',
+    roomNumber: 'OPD Room 302 (Pediatric Bay)',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 18 * 60000).toISOString(),
+    priorityRank: 1340,
+    estimatedWaitMinutes: 5,
+    assignedDoctor: 'Dr. Radhika Sen, MD (Pediatrics)',
+  },
+  {
+    id: 'pt-004',
+    tokenNumber: 'GS-201',
+    patient: {
+      id: 'P-98415',
+      abhaId: '44-1029-7721-5510',
+      fullName: 'Sunita Patel',
+      age: 44,
+      gender: 'female',
+      phone: '+91 98250 88776',
+      city: 'Pune, Maharashtra',
+      preferredLanguage: 'mr',
+    },
+    intake: {
+      chiefComplaint: 'Excruciating right lower abdominal pain that started around navel and shifted down, accompanied by 3 episodes of bilious vomiting.',
+      chiefComplaintOriginal: 'नाभीभोवती सुरू झालेला त्रास आता उजव्या बाजूला खूप तीव्र झाला आहे आणि ३ वेळा उलट्या झाल्या आहेत.',
+      inputLanguage: 'mr',
+      inputMode: 'voice',
+      duration: '10 hours',
+      onset: 'gradual',
+      bodyRegions: ['abdomen'],
+      painType: 'Severe sharp localized stabbing pain in right iliac fossa',
+      associatedSymptoms: ['Severe Abdominal Pain', 'Nausea / Vomiting', 'Low Grade Fever'],
+      dynamicQuestions: [
+        {
+          id: 'q1',
+          questionText: 'Does the pain worsen when coughing, jumping, or when the doctor presses and suddenly lets go?',
+          category: 'severity',
+          answer: 'Yes, sudden release hurts tremendously (rebound pain).',
+        }
+      ],
+      pastMedicalHistory: ['Hypertension on Amlodipine'],
+      currentMedications: ['Amlodipine 5mg OD'],
+      allergies: ['Sulfa drugs'],
+      documents: [],
+      vitals: {
+        bloodPressureSystolic: 138,
+        bloodPressureDiastolic: 84,
+        heartRate: 96,
+        spO2: 98,
+        temperature: 100.8,
+        respiratoryRate: 20,
+        painScore: 9,
+      },
+      redFlagsDetected: [
+        'Classic migration of pain to McBurney’s point with rebound tenderness',
+        'Severe acute pain score 9/10 with ongoing emesis'
+      ],
+    },
+    triage: {
+      level: 2,
+      score: 82,
+      recommendedDepartment: 'General Surgery',
+      priorityRationale: 'High clinical probability of Acute Appendicitis with peritoneal irritation. Surgical evaluation required to prevent perforation.',
+      redFlags: [
+        'Acute surgical abdomen with suspected peritonism',
+        'High pain severity 9/10'
+      ],
+      differentialConsiderations: [
+        'Acute Appendicitis',
+        'Ruptured Ovarian Cyst / Torsion',
+        'Right Ureteric Calculus',
+        'Mesenteric Lymphadenitis'
+      ],
+      suggestedInvestigations: [
+        'Urgent Ultrasound Abdomen and Pelvis with graded compression',
+        'Complete Blood Count (Leukocytosis with neutrophilia)',
+        'Urine Pregnancy Test (UPT) to rule out ectopic gestation',
+        'Serum Electrolytes & Renal Function'
+      ],
+      immediateNursingActions: [
+        'Keep patient strictly NPO (Nil Per Os)',
+        'Start IV maintenance fluids (Ringer Lactate)',
+        'IV Ondansetron 4mg for antiemesis',
+        'Surgical on-call resident consultation'
+      ],
+      aiConfidence: 0.94,
+      isEmergency: false,
+    },
+    department: 'General Surgery',
+    roomNumber: 'OPD Room 201',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 25 * 60000).toISOString(),
+    priorityRank: 1285,
+    estimatedWaitMinutes: 15,
+    assignedDoctor: 'Dr. Vivek Bhatt, MS (Gen Surgery)',
+  },
+  {
+    id: 'pt-005',
+    tokenNumber: 'GM-214',
+    patient: {
+      id: 'P-98416',
+      abhaId: '55-3392-8812-7744',
+      fullName: 'Lakshmi Devi',
+      age: 62,
+      gender: 'female',
+      phone: '+91 94401 22334',
+      city: 'Vijayawada, Andhra Pradesh',
+      preferredLanguage: 'te',
+    },
+    intake: {
+      chiefComplaint: 'Extreme thirst, frequent urination at night, blurry vision and general exhaustion for 2 weeks.',
+      chiefComplaintOriginal: 'విపరీతమైన దాహం, రాత్రిపూట మాటిమాటికి మూత్రం రావడం, కళ్ళు మసకబారడం మరియు అలసటగా ఉంది.',
+      inputLanguage: 'te',
+      inputMode: 'text',
+      duration: '2 weeks',
+      onset: 'gradual',
+      bodyRegions: ['pelvis_urinary'],
+      painType: 'No acute pain; fatigue and dry mouth',
+      associatedSymptoms: ['Extreme Thirst / Polyuria', 'Dizziness / Lightheadedness', 'General Weakness'],
+      dynamicQuestions: [],
+      pastMedicalHistory: ['Type 2 Diabetes (irregular follow up)', 'Dyslipidemia'],
+      currentMedications: ['Glibenclamide 5mg (stopped taking 1 month ago)'],
+      allergies: ['No Known Drug Allergies (NKDA)'],
+      documents: [],
+      vitals: {
+        bloodPressureSystolic: 146,
+        bloodPressureDiastolic: 88,
+        heartRate: 86,
+        spO2: 97,
+        temperature: 98.6,
+        respiratoryRate: 18,
+        bloodGlucose: 368,
+        painScore: 2,
+      },
+      redFlagsDetected: [
+        'Marked hyperglycemia: Random Blood Glucose 368 mg/dL'
+      ],
+    },
+    triage: {
+      level: 3,
+      score: 55,
+      recommendedDepartment: 'General Medicine',
+      priorityRationale: 'Severe symptomatic hyperglycemia without overt ketoacidosis symptoms. Requires prompt physician evaluation for glycemic titration.',
+      redFlags: ['Random Blood Glucose > 350 mg/dL'],
+      differentialConsiderations: [
+        'Uncontrolled Type 2 Diabetes with Osmotic Diuresis',
+        'Early Hyperosmolar Hyperglycemic State (HHS)',
+        'Secondary Urinary Tract Infection'
+      ],
+      suggestedInvestigations: [
+        'Urine Dipstick for Ketones & Glucose',
+        'HbA1c & Fasting / Postprandial plasma glucose',
+        'Serum Electrolytes (Sodium, Potassium)',
+        'Serum Creatinine & Blood Urea Nitrogen'
+      ],
+      immediateNursingActions: [
+        'Check urine ketones via dipstick',
+        'Offer oral oral hydration with water if no vomiting',
+        'Direct to OPD Room 106 for diabetologist consultation'
+      ],
+      aiConfidence: 0.92,
+      isEmergency: false,
+    },
+    department: 'General Medicine',
+    roomNumber: 'OPD Room 106',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 32 * 60000).toISOString(),
+    priorityRank: 512,
+    estimatedWaitMinutes: 25,
+    assignedDoctor: 'Dr. S. K. Narayanan, MD',
+  },
+  {
+    id: 'pt-006',
+    tokenNumber: 'OP-402',
+    patient: {
+      id: 'P-98417',
+      fullName: 'Anand Kulkarni',
+      age: 68,
+      gender: 'male',
+      phone: '+91 98220 33445',
+      city: 'Pune, Maharashtra',
+      preferredLanguage: 'mr',
+    },
+    intake: {
+      chiefComplaint: 'Bilateral knee joint aching and grinding sensation on walking or climbing stairs for 6 months.',
+      chiefComplaintOriginal: 'गेल्या ६ महिन्यांपासून दोन्ही गुडघ्यांमध्ये चालताना खूप कटकट आवाज आणि दुखणे होते.',
+      inputLanguage: 'mr',
+      inputMode: 'touch',
+      duration: '6 months',
+      onset: 'gradual',
+      bodyRegions: ['lower_limbs'],
+      painType: 'Dull aching joint stiffness',
+      associatedSymptoms: ['Joint Stiffness / Swelling'],
+      dynamicQuestions: [],
+      pastMedicalHistory: ['Mild Hypertension'],
+      currentMedications: ['Telmisartan 20mg'],
+      allergies: ['No Known Drug Allergies (NKDA)'],
+      documents: [],
+      vitals: {
+        bloodPressureSystolic: 132,
+        bloodPressureDiastolic: 82,
+        heartRate: 74,
+        spO2: 98,
+        temperature: 98.4,
+        respiratoryRate: 16,
+        painScore: 4,
+      },
+      redFlagsDetected: [],
+    },
+    triage: {
+      level: 4,
+      score: 28,
+      recommendedDepartment: 'Orthopedics',
+      priorityRationale: 'Chronic mechanical bilateral knee symptoms consistent with degenerative joint disease (Osteoarthritis). Vitals stable.',
+      redFlags: [],
+      differentialConsiderations: [
+        'Bilateral Knee Osteoarthritis Grade II-III (Kellgren-Lawrence)',
+        'Pes Anserine Bursitis',
+        'Meniscal degeneration'
+      ],
+      suggestedInvestigations: [
+        'Digital X-Ray Bilateral Knees (AP Standing & Lateral 30-degree flexion)',
+        'Serum Uric Acid (rule out crystal arthropathy)'
+      ],
+      immediateNursingActions: [
+        'Provide wheelchair if walking is uncomfortable',
+        'Direct to Orthopedics OPD Waiting Hall Room 205'
+      ],
+      aiConfidence: 0.95,
+      isEmergency: false,
+    },
+    department: 'Orthopedics',
+    roomNumber: 'OPD Room 205',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 40 * 60000).toISOString(),
+    priorityRank: 240,
+    estimatedWaitMinutes: 35,
+    assignedDoctor: 'Dr. Rohan Deshmukh, MS (Ortho)',
+  },
+  {
+    id: 'pt-007',
+    tokenNumber: 'GUEST-A1043',
+    patient: {
+      id: 'GUEST-A1043',
+      temporaryId: 'GUEST-A1043',
+      fullName: 'Ramesh Verma (Unverified Guest)',
+      age: 62,
+      gender: 'male',
+      phone: '+91 98110 44332',
+      emergencyContact: '+91 98110 44332 (Neighbor: Satish)',
+      city: 'Delhi NCR',
+      preferredLanguage: 'hi',
+      isGuest: true,
+      isEmergencyGuest: true,
+      abhaId: '',
+      abhaLinked: false,
+    },
+    intake: {
+      chiefComplaint: 'Sudden acute breathlessness and dizziness in hospital corridor; unable to locate family or ABHA card.',
+      chiefComplaintOriginal: 'अचानक बहुत सांस फूलने लगी और चक्कर आने लगे, मेरे पास अभी कोई कागज़ात या आभा कार्ड नहीं है।',
+      inputLanguage: 'hi',
+      inputMode: 'voice',
+      duration: '45 minutes',
+      onset: 'sudden',
+      bodyRegions: ['chest'],
+      painType: 'Air hunger and lightheadedness',
+      associatedSymptoms: ['Shortness of Breath / Dyspnea', 'Dizziness / Lightheadedness', 'Sweating / Cold Clammy Skin'],
+      dynamicQuestions: [],
+      pastMedicalHistory: ['History of Heart Surgery 2021'],
+      currentMedications: ['Unknown Blood Thinner'],
+      allergies: ['Unknown'],
+      documents: [],
+      sources: {
+        chiefComplaint: 'PATIENT_VOICE',
+        vitals: 'NURSE_ASSISTED',
+        duration: 'NURSE_ASSISTED',
+      },
+      nurseAssisted: true,
+      nurseAssistedBy: 'Sister Priya Sharma, RN-402',
+      vitals: {
+        bloodPressureSystolic: 154,
+        bloodPressureDiastolic: 96,
+        heartRate: 118,
+        spO2: 90,
+        temperature: 98.6,
+        respiratoryRate: 28,
+        painScore: 6,
+      },
+      redFlagsDetected: [
+        'Desaturation SpO2 90% in emergency guest patient',
+        'Tachypnea 28/min with diaphoresis'
+      ],
+    },
+    triage: {
+      level: 1,
+      score: 94,
+      recommendedDepartment: 'Emergency & Trauma',
+      priorityRationale: 'RAPID EMERGENCY GUEST ADMISSION: Severe hypoxemia (SpO2 90%) and respiratory distress in an elderly unverified patient. ABHA registration bypassed for immediate clinical stabilization.',
+      redFlags: [
+        'Hypoxemia with SpO2 90%',
+        'Tachypneic respiratory distress in elderly patient'
+      ],
+      differentialConsiderations: [
+        'Acute Pulmonary Edema / Acute Left Ventricular Failure',
+        'Acute Pulmonary Embolism',
+        'Severe COPD Exacerbation'
+      ],
+      suggestedInvestigations: [
+        'Immediate High-Flow Supplemental Oxygen',
+        'Stat Bedside ECG & Portable Chest X-Ray',
+        'Point of Care Arterial Blood Gas & Troponin-I'
+      ],
+      immediateNursingActions: [
+        'Admit straight to Emergency Resuscitation Bay 2',
+        'Start supplemental oxygen via non-rebreather mask at 10 L/min',
+        'Obtain IV access and page Emergency Physician On-Duty'
+      ],
+      aiConfidence: 0.97,
+      isEmergency: true,
+    },
+    department: 'Emergency & Trauma',
+    roomNumber: 'Emergency Resus Bay 2',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 5 * 60000).toISOString(),
+    priorityRank: 9999,
+    estimatedWaitMinutes: 0,
+    assignedDoctor: 'Dr. Vivek Singhania, MD (Emergency Med)',
+    reTriageHistory: [
+      {
+        timestamp: new Date(Date.now() - 3 * 60000).toISOString(),
+        previousLevel: 2,
+        newLevel: 1,
+        reason: 'SpO2 dropped from 94% to 90% during rapid triage; patient became cold and clammy.',
+        nurseName: 'Sister Priya Sharma, RN-402',
+        updatedWaitMinutes: 0,
+      }
+    ],
+  },
+  {
+    id: 'pt-008',
+    tokenNumber: 'AY-108',
+    patient: {
+      id: 'P-98418',
+      abhaId: '55-3021-9981-1123',
+      fullName: 'Vikramaditya Hegde',
+      age: 48,
+      gender: 'male',
+      phone: '+91 98450 77665',
+      city: 'Bengaluru, Karnataka',
+      preferredLanguage: 'kn',
+      isGuest: false,
+    },
+    intake: {
+      chiefComplaint: 'Chronic acidity, retrosternal burning after spicy food, irregular bowel habits, and unrestful sleep for 8 months.',
+      chiefComplaintOriginal: 'ಕಳೆದ ೮ ತಿಂಗಳುಗಳಿಂದ ಎದೆಯುರಿ, ಹುಳಿತೇಗು, ಅಜೀರ್ಣ ಮತ್ತು ನಿದ್ರಾಹೀನತೆಯ ಸಮಸ್ಯೆ ಇದೆ.',
+      inputLanguage: 'kn',
+      inputMode: 'voice',
+      duration: '8 months',
+      onset: 'gradual',
+      bodyRegions: ['abdomen', 'chest'],
+      painType: 'Burning retrosternal distress (Amlapitta)',
+      associatedSymptoms: ['Burning Sensation / Heartburn', 'Sleep Pattern Disturbance', 'Bloating / Gas'],
+      dynamicQuestions: [
+        {
+          id: 'q1',
+          questionText: 'Do you feel irritable if lunch is delayed past 1:30 PM?',
+          category: 'associated',
+          answer: 'Yes, severe headache and burning acidity if food is delayed.',
+        }
+      ],
+      pastMedicalHistory: ['Mild Gastritis', 'Sedentary IT work schedule'],
+      currentMedications: ['Pantoprazole 40mg SOS'],
+      allergies: ['No Known Drug Allergies'],
+      documents: [],
+      sources: {
+        chiefComplaint: 'PATIENT_VOICE',
+        prakriti: 'PATIENT_TOUCH',
+      },
+      ayushPrakriti: {
+        vataScore: 35,
+        pittaScore: 50,
+        kaphaScore: 15,
+        dominantPrakriti: 'Pitta-Vata',
+        characteristics: [
+          'Pitta: Sharp intellect, strong metabolic fire (Tikshna Agni), decisive, warmth-sensitive.',
+          'Vata: Quick comprehension, variable Agni, preference for warmth, creative adaptability.'
+        ],
+        completenessScore: 100,
+        summary: 'Preliminary constitutional profile indicates Pitta-Vata pattern (50% Pitta, 35% Vata, 15% Kapha) with Tikshna Agni tendency and Ushna intolerance. Awaiting clinical validation by AYUSH practitioner.',
+        responses: [
+          {
+            questionId: 'pq_body_build',
+            category: 'body_build',
+            questionText: 'How would you describe your overall physical body frame?',
+            answerKey: 'pitta_medium',
+            answerLabel: 'Medium, athletic, well-proportioned, moderate muscle development',
+            doshaWeight: { vata: 0, pitta: 3, kapha: 0 },
+            source: 'PATIENT_TOUCH',
+          },
+          {
+            questionId: 'pq_skin',
+            category: 'skin',
+            questionText: 'What are your natural skin characteristics?',
+            answerKey: 'pitta_warm',
+            answerLabel: 'Warm, reddish/fair, sensitive, prone to moles, freckles, or rashes',
+            doshaWeight: { vata: 0, pitta: 3, kapha: 0 },
+            source: 'PATIENT_TOUCH',
+          },
+          {
+            questionId: 'pq_appetite_digestion',
+            category: 'appetite_digestion',
+            questionText: 'How is your daily appetite and digestive rhythm (Agni)?',
+            answerKey: 'pitta_strong',
+            answerLabel: 'Strong and sharp (Tikshna Agni); becomes irritable if meals are delayed, acidic tendency',
+            doshaWeight: { vata: 0, pitta: 3, kapha: 0 },
+            source: 'PATIENT_TOUCH',
+          },
+          {
+            questionId: 'pq_sleep',
+            category: 'sleep',
+            questionText: 'What is your typical sleep pattern?',
+            answerKey: 'vata_light',
+            answerLabel: 'Light, interrupted, takes long to fall asleep, wakes feeling unrefreshed (5-6 hours)',
+            doshaWeight: { vata: 3, pitta: 0, kapha: 0 },
+            source: 'PATIENT_TOUCH',
+          },
+          {
+            questionId: 'pq_temperature_tolerance',
+            category: 'temperature_tolerance',
+            questionText: 'Which weather or climate do you naturally prefer or find most uncomfortable?',
+            answerKey: 'pitta_hates_heat',
+            answerLabel: 'Dislikes hot humid weather; craves cool air, AC, cold beverages, and shade',
+            doshaWeight: { vata: 0, pitta: 3, kapha: 0 },
+            source: 'PATIENT_TOUCH',
+          }
+        ],
+        lifestyleInfo: {
+          dietPreference: 'Vegetarian with tea and spicy snacks',
+          dailyRoutine: 'Late night desk work, irregular dinner timing (10:30 PM)',
+          stressLevel: 'Moderate to High project deadlines',
+        },
+        practitionerReview: {
+          status: 'pending_review',
+          practitionerNotes: '',
+          verifiedPrakriti: 'Pitta-Vata',
+        }
+      },
+      vitals: {
+        bloodPressureSystolic: 126,
+        bloodPressureDiastolic: 80,
+        heartRate: 76,
+        spO2: 99,
+        temperature: 98.4,
+        respiratoryRate: 16,
+        painScore: 3,
+      },
+      redFlagsDetected: [],
+    },
+    triage: {
+      level: 4,
+      score: 22,
+      recommendedDepartment: 'AYUSH / Integrative Medicine',
+      priorityRationale: 'Subacute digestive and constitutional imbalance (Amlapitta & Anidra). Ideal for holistic Ayurvedic dietary, lifestyle (Dinacharya), and therapeutic intervention.',
+      redFlags: [],
+      differentialConsiderations: [
+        'Amlapitta (Hyperacidity - Pittaja Rog)',
+        'Anidra due to Pitta-Vata vitiation',
+        'Gastroesophageal Reflux Disease (GERD)'
+      ],
+      suggestedInvestigations: [
+        'Nadi Pariksha & Ashtavidha Pariksha',
+        'Prakriti verification & Pathya-Apathya guidance',
+        'Serum Vitamin B12 & Routine CBC'
+      ],
+      immediateNursingActions: [
+        'Direct to AYUSH & Integrative Medicine OPD Room 4',
+        'Provide lukewarm water and herbal digestive tea (Jeera-Dhanya)'
+      ],
+      aiConfidence: 0.94,
+      isEmergency: false,
+    },
+    department: 'AYUSH / Integrative Medicine',
+    roomNumber: 'AYUSH & Ayurveda Room 4',
+    status: 'waiting',
+    createdAt: new Date(Date.now() - 25 * 60000).toISOString(),
+    priorityRank: 210,
+    estimatedWaitMinutes: 20,
+    assignedDoctor: 'Dr. Meenakshi Sundaram, BAMS, MD (Ayu)',
+  },
+];

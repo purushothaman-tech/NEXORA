@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "QueueTicket": {
+      "title": "QueueTicket",
+      "description": "Clinical OPD and emergency triage queue ticket for hospital intake and doctor consultation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "tokenNumber": { "type": "string", "maxLength": 32 },
+        "patient": { "type": "object" },
+        "intake": { "type": "object" },
+        "triage": { "type": "object" },
+        "department": { "type": "string", "maxLength": 64 },
+        "roomNumber": { "type": "string", "maxLength": 32 },
+        "status": { "type": "string", "enum": ["waiting", "called", "in_consultation", "completed", "transferred_to_er"] },
+        "createdAt": { "type": "string" },
+        "calledAt": { "type": "string" },
+        "completedAt": { "type": "string" },
+        "priorityRank": { "type": "number" },
+        "estimatedWaitMinutes": { "type": "number" },
+        "triageSource": { "type": "string", "enum": ["gemini", "rules_fallback"] },
+        "doctorNotes": { "type": "string", "maxLength": 4000 },
+        "orderedInvestigations": { "type": "array" },
+        "practitionerVerification": { "type": "object" },
+        "adcpProtocol": { "type": "object" }
+      },
+      "required": ["id", "tokenNumber", "patient", "intake", "triage", "department", "status", "createdAt"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "ABDM compliant clinical audit trail entry for patient registration, re-triage, and record modification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string" },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userName": { "type": "string", "maxLength": 128 },
+        "userRole": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 128 },
+        "patientName": { "type": "string", "maxLength": 128 },
+        "action": { "type": "string", "maxLength": 256 },
+        "previousValue": { "type": "string", "maxLength": 512 },
+        "newValue": { "type": "string", "maxLength": 512 },
+        "source": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "timestamp", "userName", "userRole", "patientId", "action"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Hospital staff and practitioner profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 512 },
+        "role": { "type": "string", "enum": ["doctor", "nurse", "admin", "staff"] },
+        "department": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/queue_tickets/{ticketId}": {
+      "schema": "QueueTicket",
+      "description": "Collection of patient OPD and emergency triage queue tickets"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "ABDM compliance clinical audit trail records"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Hospital medical officers, nurses, and administrative user profiles"
+    }
+  }
+}

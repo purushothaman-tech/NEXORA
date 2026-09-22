@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isChiefAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email.lower() == 'shalinidamu2007@gmail.com' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true)
+      );
+    }
+
+    function isValidTicketId(ticketId) {
+      return ticketId is string && ticketId.size() > 0 && ticketId.size() <= 128;
+    }
+
+    function isValidLogId(logId) {
+      return logId is string && logId.size() > 0 && logId.size() <= 128;
+    }
+
+    // Hospital Staff and Practitioner Profiles
+    match /users/{userId} {
+      allow read: if true;
+      allow create: if isSignedIn() && (request.auth.uid == userId || isChiefAdmin());
+      allow update: if isSignedIn() && (request.auth.uid == userId || isChiefAdmin());
+      allow delete: if isChiefAdmin();
+    }
+
+    // Patient OPD & Emergency Queue Tickets
+    match /queue_tickets/{ticketId} {
+      // Readable for clinic dashboard, doctor workstation, and waiting room public display
+      allow read: if true;
+      
+      // Patient self-service kiosk, emergency admission, or nurse intake can create
+      allow create: if isValidTicketId(ticketId) &&
+        request.resource.data.keys().hasAll(['id', 'tokenNumber', 'patient', 'intake', 'triage', 'department', 'status']);
+      
+      // Doctors, nurses, and registration staff can update ticket status, doctor notes, re-triage, ABHA linking
+      allow update: if isValidTicketId(ticketId);
+      
+      // Only chief admin can delete clinical records
+      allow delete: if isChiefAdmin();
+    }
+
+    // ABDM Clinical Compliance Audit Logs
+    match /audit_logs/{logId} {
+      // Readable for compliance verification and audit trail modal
+      allow read: if true;
+      
+      // Append-only audit logs created by hospital workflows
+      allow create: if isValidLogId(logId) &&
+        request.resource.data.keys().hasAll(['id', 'timestamp', 'userName', 'userRole', 'patientId', 'action']);
+      
+      // Audit logs are immutable once written
+      allow update: if false;
+      allow delete: if isChiefAdmin();
+    }
+
+    // Test connection document for connection health check
+    match /test/{docId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Default-deny catch-all (Pillar 8)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
